@@ -2,13 +2,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+# sample random 2D data arrays x and y
 y = -2 * np.random.rand(100,2)
 x = 1 + 2 + np.random.rand(100,2)
-
-# a = np.array([1,2])
-# b = np.array([2,3])
-# print(a)
-# plt.scatter(a[0], a[1])
 
 # Algo for KMeans
 # cateogrizing data into clusters based on centroids
@@ -40,17 +36,16 @@ def KMeans(data, clusters, iterations=10, centroids={}):
     k = clusters
     # setting up first set of centroids using random datapoints
     for i in range(k):
-        centroids[i] = x[np.random.randint(0, len(data))]
+        centroids[i] = data[np.random.randint(0, len(data))]
     
     for iters in range(iterations):
         clusters = new_clusters(data, centroids, k)
         centroids = new_centroids(data, clusters, k)
 
-    # return clusters, centroids
-    # Visualization Command
+    # Visualization Commands
 
-    plt.figure(figsize=(5,3))
-# clusters, centroids = KMeans(x, 4) 
+    plt.figure(figsize=(8,5))
+
     colors = ('red', 'green', 'blue', 'orange', 'brown', 'violet')
     
     for i in range(k):
@@ -59,6 +54,5 @@ def KMeans(data, clusters, iterations=10, centroids={}):
         plt.scatter(centroids[i][0], centroids[i][1], c='black')
     plt.show()
 
-    
-# plt.show()
-KMeans(x, 6)
+if __name__=="__main__":
+    KMeans(x, 6)
