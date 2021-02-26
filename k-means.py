@@ -21,7 +21,33 @@ x = 3 + np.random.rand(100,2)
 
 # reference: https://www.jeremyjordan.me/grouping-data-points-with-k-means-clustering/
 # ------------------------------------------------------------------------
-
+#read CSV/TXT file
+def ReadData(fileName):  
+  
+    # Read the file, splitting by lines  
+    f = open(fileName, 'r');  
+    lines = f.read().splitlines();  
+    f.close();  
+  
+    items = [];  
+  
+    for i in range(1, len(lines)):  
+        line = lines[i].split(',');  
+        itemFeatures = [];  
+  
+        for j in range(len(line)-1):  
+              
+            # Convert feature value to float 
+            v = float(line[j]);  
+              
+            # Add feature value to dictionary  
+            itemFeatures.append(v);  
+  
+        items.append(itemFeatures);  
+  
+    shuffle(items);  
+  
+    return items; 
 # euclidean distance calculation
 def dist_bw(a, b):
     # Returns euclidean distance between two points
@@ -76,4 +102,5 @@ def KMeans(data, clusters, iterations=10, centroids={}):
     plt.show()
 
 if __name__=="__main__":
+    items = ReadData('test.txt')
     KMeans(x, 6)
