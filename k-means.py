@@ -83,6 +83,7 @@ def new_centroids(data, clusters, k):
 
 def KMeans(data, n_clusters, centroids={}):
     k = n_clusters
+    iterations = 0
     # setting up first set of centroids using random datapoints
     if centroids == {}:
         for i in range(k):
@@ -98,7 +99,7 @@ def KMeans(data, n_clusters, centroids={}):
         if all(bool_list) == True:
             print("No Further Changes")
             break
-        
+        iterations += 1
         prev_centroids = centroids
     
     # Visualization Commands
