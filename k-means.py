@@ -1,12 +1,13 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from random import shuffle
 
 
 # DATA LOADING
 # sample random 2D data arrays x and y
 
-x = 3 + np.random.rand(100,2)
+x = 3 + np.random.rand(50,2)
 
 
 # K-MEANS ALGORITHM
@@ -17,10 +18,11 @@ x = 3 + np.random.rand(100,2)
 # 2. Assign data points to nearest centroid.
 # 3. Reassign centroid value to be the calculated mean value for each cluster.
 # 4. Reassign data points to nearest centroid.
-# 5. Repeat until data points stay in the same cluster. (not yet implemented)
+# 5. Repeat until data points stay in the same cluster.
 
 # reference: https://www.jeremyjordan.me/grouping-data-points-with-k-means-clustering/
 # ------------------------------------------------------------------------
+
 #read CSV/TXT file
 def ReadData(fileName):  
   
@@ -79,17 +81,26 @@ def new_centroids(data, clusters, k):
         centroids[i] = np.mean(clusters[i], axis=0)
     return centroids
 
-def KMeans(data, clusters, iterations=10, centroids={}):
-    k = clusters
+def KMeans(data, n_clusters, centroids={}):
+    k = n_clusters
     # setting up first set of centroids using random datapoints
     if centroids == {}:
         for i in range(k):
             centroids[i] = data[np.random.randint(0, len(data))]
-    
-    for iters in range(iterations):
+    prev_centroids = centroids
+
+    while True:
         clusters = new_clusters(data, centroids, k)
         centroids = new_centroids(data, clusters, k)
-
+        # check to see if iterations need to stop
+        bool_list = [(prev_centroids[i][0] == centroids[i][0]) and
+                    (prev_centroids[i][1] == centroids[i][1]) for i in range(k)]
+        if all(bool_list) == True:
+            print("No Further Changes")
+            break
+        
+        prev_centroids = centroids
+    
     # Visualization Commands
     plt.figure(figsize=(6,6))
 
@@ -103,4 +114,9 @@ def KMeans(data, clusters, iterations=10, centroids={}):
 
 if __name__=="__main__":
     items = ReadData('test.txt')
-    KMeans(x, 6)
+    print(items)
+    kmeans_array = []
+    for i in items:
+        kmeans_array.append([i[0], i[1]])
+
+    KMeans(x, 4)
