@@ -89,10 +89,10 @@ def visualize_kmeans(clusters, centroids, og_centroids, k):
     colors = ('red', 'green', 'blue', 'orange', 'purple', 'darkslateblue', 'cyan')
     
     for i in range(k):
-        plt.scatter(og_centroids[i][0], og_centroids[i][1], c='black', marker='X')
-        plt.scatter(centroids[i][0], centroids[i][1], c='black')
         for data in clusters[i]:
             plt.scatter(data[0], data[1], c=colors[i])
+        plt.scatter(og_centroids[i][0], og_centroids[i][1], c='black', marker='o')
+        plt.scatter(centroids[i][0], centroids[i][1], c='black', marker='X')
     plt.show()
 
 # k-means iterations
@@ -130,4 +130,4 @@ if __name__=="__main__":
     for i in items:
         kmeans_array.append([i[0], i[1]])
 
-    KMeans(x, 4)
+    KMeans(kmeans_array, 4)
