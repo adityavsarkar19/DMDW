@@ -5,9 +5,14 @@ from random import shuffle
 
 
 # DATA LOADING
-# sample random 2D data arrays x and y
 
+# sample random 2D data arrays x and y
 x = 3 + np.random.rand(50,2)
+
+# Urban Great Britan Car Crash location data
+filepath = "../DMDW/datasets/urbanGB_crashLoc.csv"
+df = pd.read_csv(filepath)
+GB_array = np.array(df) # use GB_array in KMeans function
 
 
 # K-MEANS ALGORITHM
@@ -111,7 +116,7 @@ def KMeans(data, n_clusters, centroids={}):
         centroids = new_centroids(data, clusters, k)
         # check to see if iterations need to stop
         bool_list = [(prev_centroids[i][0] == centroids[i][0]) and
-                    (prev_centroids[i][1] == centroids[i][1]) for i in range(k)]
+                     (prev_centroids[i][1] == centroids[i][1]) for i in range(k)]
         if all(bool_list) == True:
             print(f"No Further Changes: {iterations} completed iterations\n")
             print(f"Initial Centroids: {og_centroids}\nFinal Centroids: {centroids}")
@@ -125,9 +130,8 @@ def KMeans(data, n_clusters, centroids={}):
 
 if __name__=="__main__":
     items = ReadData('test.txt')
-    print(items)
     kmeans_array = []
     for i in items:
         kmeans_array.append([i[0], i[1]])
 
-    KMeans(kmeans_array, 4)
+    KMeans(GB_array, 4)
