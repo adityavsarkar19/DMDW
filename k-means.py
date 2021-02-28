@@ -50,6 +50,7 @@ def ReadData(fileName):
     shuffle(items);  
   
     return items; 
+
 # euclidean distance calculation
 def dist_bw(a, b):
     # Returns euclidean distance between two points
@@ -79,8 +80,22 @@ def new_centroids(data, clusters, k):
     # new centroids based on the mean of all points in the new cluster
     for i in range(k):
         centroids[i] = np.mean(clusters[i], axis=0)
+    
     return centroids
 
+# Visualization Commands
+def visualize_kmeans(clusters, centroids, og_centroids, k):
+    plt.figure(figsize=(6,6))
+    colors = ('red', 'green', 'blue', 'orange', 'purple', 'darkslateblue', 'cyan')
+    
+    for i in range(k):
+        plt.scatter(og_centroids[i][0], og_centroids[i][1], c='black', marker='X')
+        plt.scatter(centroids[i][0], centroids[i][1], c='black')
+        for data in clusters[i]:
+            plt.scatter(data[0], data[1], c=colors[i])
+    plt.show()
+
+# k-means iterations
 def KMeans(data, n_clusters, centroids={}):
     k = n_clusters
     iterations = 0
@@ -88,6 +103,7 @@ def KMeans(data, n_clusters, centroids={}):
     if centroids == {}:
         for i in range(k):
             centroids[i] = data[np.random.randint(0, len(data))]
+    og_centroids   = centroids
     prev_centroids = centroids
 
     while True:
@@ -97,21 +113,15 @@ def KMeans(data, n_clusters, centroids={}):
         bool_list = [(prev_centroids[i][0] == centroids[i][0]) and
                     (prev_centroids[i][1] == centroids[i][1]) for i in range(k)]
         if all(bool_list) == True:
-            print("No Further Changes")
+            print(f"No Further Changes: {iterations} completed iterations\n")
+            print(f"Initial Centroids: {og_centroids}\nFinal Centroids: {centroids}")
             break
         iterations += 1
         prev_centroids = centroids
-    
-    # Visualization Commands
-    plt.figure(figsize=(6,6))
 
-    colors = ('red', 'green', 'blue', 'orange', 'purple', 'darkslateblue', 'cyan')
-    
-    for i in range(k):
-        plt.scatter(centroids[i][0], centroids[i][1], c='black')
-        for data in clusters[i]:
-            plt.scatter(data[0], data[1], c=colors[i])
-    plt.show()
+    # visualization of clusters and centroids
+    visualize_kmeans(clusters, centroids, og_centroids, k)
+
 
 if __name__=="__main__":
     items = ReadData('test.txt')
