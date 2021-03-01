@@ -1,5 +1,5 @@
-# DMDW
-Data Mining Course Assignments 
+# DMDW - Assignment 1 - K-Means Clustering
+
 
 #### DESCRIPTION
 
