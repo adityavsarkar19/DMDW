@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Feb 25 17:34:26 2021
+
+@author: Aditya Sarkar, Pritish Dugar, Sahil Verma
+"""
+import csv
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,14 +12,8 @@ from random import shuffle
 
 
 # DATA LOADING
-
 # sample random 2D data arrays x and y
-x = 3 + np.random.rand(50,2)
-
-# Urban Great Britan Car Crash location data
-filepath = "../DMDW/datasets/urbanGB_crashLoc.csv"
-df = pd.read_csv(filepath)
-GB_array = np.array(df) # use GB_array in KMeans function
+# x = 3 + np.random.rand(10000,2)
 
 
 # K-MEANS ALGORITHM
@@ -28,33 +29,6 @@ GB_array = np.array(df) # use GB_array in KMeans function
 # reference: https://www.jeremyjordan.me/grouping-data-points-with-k-means-clustering/
 # ------------------------------------------------------------------------
 
-#read CSV/TXT file
-def ReadData(fileName):  
-  
-    # Read the file, splitting by lines  
-    f = open(fileName, 'r');  
-    lines = f.read().splitlines();  
-    f.close();  
-  
-    items = [];  
-  
-    for i in range(1, len(lines)):  
-        line = lines[i].split(',');  
-        itemFeatures = [];  
-  
-        for j in range(len(line)-1):  
-              
-            # Convert feature value to float 
-            v = float(line[j]);  
-              
-            # Add feature value to dictionary  
-            itemFeatures.append(v);  
-  
-        items.append(itemFeatures);  
-  
-    shuffle(items);  
-  
-    return items; 
 
 # euclidean distance calculation
 def dist_bw(a, b):
@@ -116,7 +90,7 @@ def KMeans(data, n_clusters, centroids={}):
         centroids = new_centroids(data, clusters, k)
         # check to see if iterations need to stop
         bool_list = [(prev_centroids[i][0] == centroids[i][0]) and
-                     (prev_centroids[i][1] == centroids[i][1]) for i in range(k)]
+                    (prev_centroids[i][1] == centroids[i][1]) for i in range(k)]
         if all(bool_list) == True:
             print(f"No Further Changes: {iterations} completed iterations\n")
             print(f"Initial Centroids: {og_centroids}\nFinal Centroids: {centroids}")
@@ -127,11 +101,15 @@ def KMeans(data, n_clusters, centroids={}):
     # visualization of clusters and centroids
     visualize_kmeans(clusters, centroids, og_centroids, k)
 
+# Main Program
 
-if __name__=="__main__":
-    items = ReadData('test.txt')
-    kmeans_array = []
-    for i in items:
-        kmeans_array.append([i[0], i[1]])
+#read CSV file
+filename = 'test3.csv'
+#filename = 'test2.csv'
+#filename = 'urbanGB.csv'
+#filename = 'urbanGB_crashLoc.csv'
 
-    KMeans(GB_array, 4)
+df = pd.read_csv(filename)
+kmeans_array = np.array(df) # use GB_array in KMeans function
+
+KMeans(kmeans_array, 4)
